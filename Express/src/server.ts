@@ -27,19 +27,44 @@ let planets: Planets = [
   ];
 
 
-app.get('/', (req, res) => { 
+//GET /api/planets: return all planets (JSON) with 200
+app.get('/api/planets', (req, res) => { 
     res.status(200).json(planets)
 })
 
-app.post('api/planets', (req, res) => {
+//GET /api/planets/:id: return a planet (JSON) by id with 200
+app.get('/api/planets/:id', (req, res) => { 
+    const { id } = req.params
+    const planet = planets.find(p => p.id === Number(id))
+    res.status(200).json(planet)
+})
+
+//POST /api/planets: create a planet, return only 201 code and a success JSON with key msg
+app.post('/api/planets', (req, res) => { 
   const { id, name } = req.body
   const newPlanet = {id, name}
   planets = [...planets, newPlanet]
 
-  res.status(201).json({ message: 'The planet was created '})
+  res.status(201).json({ msg: 'The planet was created '})
 
 })
-  
+
+//PUT /api/planets/:id: update a planet by id, return only 200 code and a success JSON with key msg
+app.put('/api/planets/:id', (req, res) => { 
+  const { id } = req.params
+  const { name } = req.body
+  planets = planets.map(p => p.id === Number(id) ? ({...p, name}) : p)
+  res.status(200).json({ msg: 'The planet was updated '})
+})
+
+//DELETE /api/planets/:id: delete a planet by id, return only 200 code and a success JSON with key msg
+app.delete('/api/planets/:id', (req, res) => {
+  const { id } = req.params
+  planets = planets.filter(p => p.id !== Number(id))
+
+  res.status(200).json({ message: 'The planet was deleted' })
+})
+
 app.listen(port, () => {
     console.log(`Example app listening on port http://localhost:${port}`)
 })

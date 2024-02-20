@@ -1,5 +1,6 @@
 import express from 'express'
 import 'express-async-errors'
+import Joi, { number, string } from 'joi'
 import morgan from 'morgan'
 
 const app = express()
@@ -39,13 +40,23 @@ app.get('/api/planets/:id', (req, res) => {
     res.status(200).json(planet)
 })
 
+// Joi library for validation:
+const validateNewPlanet = Joi.object({
+  id: number().integer().required(),
+  name: string().required()
+})
+
 //POST /api/planets: create a planet, return only 201 code and a success JSON with key msg
 app.post('/api/planets', (req, res) => { 
   const { id, name } = req.body
   const newPlanet = {id, name}
-  planets = [...planets, newPlanet]
-
-  res.status(201).json({ msg: 'The planet was created '})
+  const validation = validateNewPlanet.validate(newPlanet)
+  if(validation.error){
+    res.status(400).json({ msg: validation.error })
+  } else{
+    planets = [...planets, newPlanet]
+    res.status(201).json({ msg: 'The planet was created '})
+  }
 
 })
 

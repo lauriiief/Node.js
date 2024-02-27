@@ -18,6 +18,8 @@ const upload = multer({ storage })
 const app = express()
 const port = 3000
 
+app.use('/uploads', express.static('uploads'));
+
 app.use(morgan('dev'))
 app.use(express.json())
 

@@ -31,6 +31,7 @@ const getAll = async (req: Request, res: Response) => {
 
 const getOneById = async (req: Request, res:Response) => { 
     const { id } = req.params
+    //const planet = planets.find(p => p.id === Number(id))
     const planet = await db.one(`SELECT * FROM planets WHERE id=id;`, Number(id))
     res.status(200).json(planet)
 }
@@ -48,6 +49,7 @@ const create = async (req: Request, res: Response)=> {
     if(validation.error){
       res.status(400).json({ msg: validation.error })
     } else{
+      //planets = [...planets, newPlanet]
       await db.none(`INSERT INTO planets {name} VALUES ($1)`, name)
       res.status(201).json({ msg: 'The planet was created '})
     }

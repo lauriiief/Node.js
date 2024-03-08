@@ -6,6 +6,7 @@ import { deleteById, getAll, getOneById, updateById, create, createImage } from 
 import { login, signup, logout } from './controllers/users'
 import multer from 'multer'
 import authorize from './authorize'
+import './passport.js'
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

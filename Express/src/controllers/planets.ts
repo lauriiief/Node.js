@@ -1,27 +1,6 @@
 import { Request, Response } from "express";
 import Joi, { number, string } from "joi";
-import pgPromise from "pg-promise";
-
-const db = pgPromise()("postgres://user:password@localhost:5432//databasename")
-
-const setupDb = async () => {
-  await db.none(`
-  DROP TABLE IF EXIST planets;
-
-  CREATE TABLE planets {
-    id SERIAL NOT NULL PRIMARY KEY,
-    name TEXT NOT NULL,
-    image TEXT
-  };
-  `)
-
-  await db.none(` INSERT INTO planets {name} VALUES {Earth}`)
-  await db.none(` INSERT INTO planets {name} VALUES {Pluto}`)
-  await db.none(` INSERT INTO planets {name} VALUES {Venus}`)
-
-}
-
-setupDb()
+import { db } from "../db";
 
 
 const getAll = async (req: Request, res: Response) => { 

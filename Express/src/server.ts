@@ -3,6 +3,7 @@ import 'express-async-errors'
 import Joi, { number, string } from 'joi'
 import morgan from 'morgan'
 import { deleteById, getAll, getOneById, updateById, create, createImage } from './controllers/planets'
+import { login, signup } from './controllers/users'
 import multer from 'multer'
 
 const storage = multer.diskStorage({
@@ -40,7 +41,11 @@ app.put('/api/planets/:id', updateById)
 app.delete('/api/planets/:id', deleteById)
 
 // Set POST /planets/:id/image route for file upload (planet's image).
-app.post('api/planets/:id/image', upload.single('image'), createImage)
+app.post('/api/planets/:id/image', upload.single('image'), createImage)
+
+app.post('/api/users/login', login)
+
+app.post('/api/users/signup', signup)
 
 app.listen(port, () => {
     console.log(`Example app listening on port http://localhost:${port}`)
